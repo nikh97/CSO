@@ -17,25 +17,25 @@ void compress(int c1, int c2, FILE * out_file);
 void extract(char c1, FILE * out_file);
 
 int main ( int argc, char ** argv ) { 
-    
+
     //checks for the 4 required command line arguments 
     // If they are not there, exit the program
     if (argc < 4){
         printf("ERROR: this program needs three command line arguments\n");
-        printf("\tUsage: %s e|d input_file_path output_file_path\n\n", argv[0] ); 
+        printf("\tUsage: %s c|e input_file_path output_file_path\n\n", argv[0] ); 
         exit(1); 
     }
-
+    
     // takes in the first argument from command line
     char n = (char)(argv[1][0]);
 
     //if the first argument is not 'c' or 'd', print error and exit
-    if(n != 'c' || n != 'e'){
+    if(n != 'c' && n != 'e'){
 
-        printf("ERROR: First argument must be 'c' or 'd' for compression or extraction.\n");
+        printf("ERROR: First argument must be 'c' or 'e' for compression or extraction.\n");
         exit(1);
     }
-
+    
     //open the file for reading
     FILE * in_file = fopen (argv[2], "r" ); 
     
@@ -51,6 +51,7 @@ int main ( int argc, char ** argv ) {
 
     //read digits one by one and write them to the output file
     while ( EOF != (c1 = fgetc(in_file))) {
+        
         //if newline is found before the end of file, it is not a valid input file
         if (end_in_newline){ 
             printf("ERROR: invalid character detected: only one newline "
@@ -64,7 +65,7 @@ int main ( int argc, char ** argv ) {
             continue;
         } 
 
-        //if doing compression and the character is no numeric, exit the system for invalid file
+        //if doing compression and the character is non numeric, exit the system for invalid file
         if ((c1 <'0' || c1 >'9') && n == 'c') {
             printf("ERROR: invalid character detected c1: %c \n\n", c1);
             exit(1);
